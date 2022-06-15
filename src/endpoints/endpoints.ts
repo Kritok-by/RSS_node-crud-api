@@ -20,6 +20,7 @@ export const enspointsHandler = async (
   req: IncomingMessage,
   res: ServerResponse
 ) => {
+  console.log(`Process pid: ${process.pid}`);
   res.setHeader('Content-Type', 'application/json');
   try {
     if (!req.url?.includes('/api/users')) {
@@ -53,7 +54,7 @@ export const enspointsHandler = async (
         putData(res, id, body);
         break;
       case Methods.DELETE:
-        await deleteData(res, id);
+        deleteData(res, id);
         break;
       default:
         status503(res);
