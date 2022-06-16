@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { enspointsHandler } from './endpoints/endpoints';
 import { createProcesses } from './shared/cluster';
 
-const server = createServer(enspointsHandler);
+export const server = createServer(enspointsHandler);
 
 server.on('error', (error) => console.log(error.message));
 
