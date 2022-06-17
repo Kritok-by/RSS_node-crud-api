@@ -21,7 +21,7 @@ export const enspointsHandler = async (
   res: ServerResponse
 ) => {
   console.log(`Process pid: ${process.pid}`);
-  res.setHeader('Content-Type', 'application/json');
+  // res.setHeader('Content-Type', 'application/json');
   try {
     if (!req.url?.includes('/api/users')) {
       status404(res, 'Bad request');

@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from 'http';
+import { ServerResponse } from 'http';
 import { usersTable } from '../db/db';
-import { IPostData, IUser, IUserTable } from '../shared/intefaces';
+import { IPostData, IUser } from '../shared/intefaces';
 import {
   status200,
   status201,

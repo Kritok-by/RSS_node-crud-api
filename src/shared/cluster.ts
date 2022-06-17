@@ -1,7 +1,7 @@
 import cluster from 'cluster';
 import { cpus } from 'os';
 
-export const createProcesses = (callback: () => void) => {
+export const createLoadBalancer = (callback: () => void) => {
   if (cluster.isPrimary) {
     const cp = cpus();
 

@@ -5,12 +5,13 @@ export const status200 = (
   res: ServerResponse,
   body: IUserTable | IUserTable[]
 ) => {
-  res.statusCode = 200;
+  res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(body));
 };
 
 export const status201 = (res: ServerResponse, body: IUserTable) => {
-  res.statusCode = 201;
+  res.writeHead(201, { 'Content-Type': 'application/json' });
+
   res.end(JSON.stringify(body));
 };
 
