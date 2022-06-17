@@ -8,11 +8,20 @@ export const server = createServer(enspointsHandler);
 
 server.on('error', (error) => console.log(error.message));
 
-createProcesses(() =>
+if(process.env.LB){
+  createProcesses(() =>
+    server.listen(process.env.PORT, () =>
+      console.log(
+        `Server runnig on port ${process.env.PORT}`,
+        `Proccess ${process.pid} started`
+      )
+    )
+  );
+} else {
   server.listen(process.env.PORT, () =>
     console.log(
       `Server runnig on port ${process.env.PORT}`,
       `Proccess ${process.pid} started`
     )
   )
-);
+}
