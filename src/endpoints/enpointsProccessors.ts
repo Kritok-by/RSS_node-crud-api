@@ -25,9 +25,7 @@ export const getData = (res: ServerResponse, id?: string) => {
 
 export const postData = (res: ServerResponse, body: IPostData) => {
   const validated = validatePost(res, body);
-  if (!validated) {
-    return;
-  }
+  if (!validated) return;
 
   const newUser = {
     id: uuidv4(),
@@ -42,6 +40,9 @@ export const postData = (res: ServerResponse, body: IPostData) => {
 };
 
 export const putData = (res: ServerResponse, id: string, body: IUser) => {
+  const validated = validatePost(res, body);
+  if (!validated) return;
+
   let userIndex = 0;
   const user = usersTable.find((user, index) => {
     if (user.id === id) {
@@ -92,7 +93,7 @@ const validatePost = (res: ServerResponse, data: IUser) => {
   let validated = true;
   const fields = ['username', 'age', 'hobbies'];
   fields.forEach((field: string) => {
-    if (!(field in data)) {
+    if (!(field in data) && validated) {
       validated = false;
       status400(res, `Field "${field}" must be specified`);
     }
