@@ -8,6 +8,7 @@ import {
 } from '../shared/responses';
 import { validate } from 'uuid';
 import { deleteData, getData, postData, putData } from './enpointsProccessors';
+import { IUserTable } from '../shared/intefaces';
 
 const enum Methods {
   GET = 'GET',
@@ -18,10 +19,9 @@ const enum Methods {
 
 export const enspointsHandler = async (
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
+  usersTable: IUserTable[]
 ) => {
-  if (process.env.LB) console.log(`Process pid: ${process.pid}`);
-
   try {
     if (!req.url?.includes('/api/users')) {
       status404(res, 'Bad request');
@@ -36,10 +36,9 @@ export const enspointsHandler = async (
     }
 
     let body: any;
-
     switch (req.method) {
       case Methods.GET:
-        getData(res, id);
+        getData(res, usersTable, id);
         break;
       case Methods.POST:
         body = await getBody(req, res);
@@ -47,14 +46,14 @@ export const enspointsHandler = async (
           status503(res);
           return;
         }
-        postData(res, body);
+        postData(res, body, usersTable);
         break;
       case Methods.PUT:
         body = await getBody(req, res);
-        putData(res, id, body);
+        putData(res, id, body, usersTable);
         break;
       case Methods.DELETE:
-        deleteData(res, id);
+        deleteData(res, id, usersTable);
         break;
       default:
         status503(res);

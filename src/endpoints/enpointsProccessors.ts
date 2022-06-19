@@ -1,6 +1,6 @@
 import { ServerResponse } from 'http';
 import { usersTable } from '../db/db';
-import { IPostData, IUser } from '../shared/intefaces';
+import { IPostData, IUser, IUserTable } from '../shared/intefaces';
 import {
   status200,
   status201,
@@ -10,7 +10,11 @@ import {
 } from '../shared/responses';
 import { v4 as uuidv4 } from 'uuid';
 
-export const getData = (res: ServerResponse, id?: string) => {
+export const getData = (
+  res: ServerResponse,
+  usersTable: IUserTable[],
+  id?: string
+) => {
   if (id) {
     const user = usersTable.find((user) => user.id === id);
     if (!user) {
@@ -21,9 +25,14 @@ export const getData = (res: ServerResponse, id?: string) => {
     return;
   }
   status200(res, usersTable);
+  return;
 };
 
-export const postData = (res: ServerResponse, body: IPostData) => {
+export const postData = (
+  res: ServerResponse,
+  body: IPostData,
+  usersTable: IUserTable[]
+) => {
   const validated = validatePost(res, body);
   if (!validated) return;
 
@@ -35,11 +44,19 @@ export const postData = (res: ServerResponse, body: IPostData) => {
   };
 
   usersTable.push(newUser);
-
+  if (process.env.LB) {
+    (<any>process).send({ method: 'post', data: usersTable });
+  }
   status201(res, newUser);
+  return;
 };
 
-export const putData = (res: ServerResponse, id: string, body: IUser) => {
+export const putData = (
+  res: ServerResponse,
+  id: string,
+  body: IUser,
+  usersTable: IUserTable[]
+) => {
   const validated = validatePost(res, body);
   if (!validated) return;
 
@@ -73,10 +90,18 @@ export const putData = (res: ServerResponse, id: string, body: IUser) => {
 
   usersTable[userIndex] = user;
 
+  if (process.env.LB) {
+    (<any>process).send({ method: 'post', data: usersTable });
+  }
+
   status200(res, user);
 };
 
-export const deleteData = (res: ServerResponse, id: string) => {
+export const deleteData = (
+  res: ServerResponse,
+  id: string,
+  usersTable: IUserTable[]
+) => {
   const userIndex = usersTable.findIndex((user) => user.id === id);
 
   if (userIndex === -1) {
@@ -85,6 +110,10 @@ export const deleteData = (res: ServerResponse, id: string) => {
   }
 
   usersTable.splice(userIndex, 1);
+
+  if (process.env.LB) {
+    (<any>process).send({ method: 'post', data: usersTable });
+  }
 
   status204(res, id);
 };

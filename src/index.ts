@@ -3,8 +3,20 @@ import 'dotenv/config';
 
 import { enspointsHandler } from './endpoints/methodsProccessing';
 import { createLoadBalancer } from './shared/cluster';
+import { IUserTable } from './shared/intefaces';
+import { usersTable as table } from './db/db';
 
-export const server = createServer(enspointsHandler);
+export const server = createServer((req, res) => {
+  if (process.env.LB) {
+    console.log(`Process pid: ${process.pid}`);
+    (<any>process).send({ method: 'get' });
+    process.on('message', async (usersTable: IUserTable[]) => {
+      enspointsHandler(req, res, usersTable);
+    });
+  } else {
+    enspointsHandler(req, res, table);
+  }
+});
 
 if (process.env.LB) {
   createLoadBalancer(() =>
