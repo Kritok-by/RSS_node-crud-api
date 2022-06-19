@@ -7,7 +7,7 @@
     "start:dev": "cross-env PORT=4000 nodemon --exec ts-node src/index.ts",
     "start:multi": "cross-env PORT=4000 LB=true nodemon --exec ts-node src/index.ts",
     "start:prod": "tsc && cross-env PORT=4000 node dist/index.js",
-    "test:one": "TEST=true jest"
+    "test": "TEST=true PORT=8000 jest"
   },
   "author": "Artsiom Matsukov",
   "license": "MIT",
