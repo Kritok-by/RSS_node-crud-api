@@ -3,6 +3,24 @@
 Small API with once endpont who supportes CRUD operations.
 Used in-memory database.
 
+# Used technologies:
+- node.js version: 16 LTS
+- TypeScript
+- nodemon
+- dotenv
+- cross-env
+- ts-node
+- eslint
+- prettier
+- uuid
+- jest
+- supertest
+
+# Easy to use:
+- Download project files (project located in *crud-api* branch)
+- Go to project root directory
+- Run `npm i`
+
 # You can run
 
     1. npm run start:prod - bundle & started server (production mode)
