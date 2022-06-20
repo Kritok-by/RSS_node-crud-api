@@ -1,0 +1,14 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(ts)?$": "ts-jest",
+    "^.+\\.(js)$": "babel-jest"
+  },
+  "testMatch": [
+    "**/tests/**/*.test.ts"
+  ],
+  "transformIgnorePatterns": [
+    "./node_modules/"
+  ]
+}
